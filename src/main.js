@@ -52,14 +52,16 @@ function analyzeSalesData(data, options) {
   }
 
   // @TODO: Проверка наличия опций
-  const { calculateRevenue, calculateBonus } = options;
+
   if (
-    !typeof options === "object" ||
-    !typeof calculateRevenue === "function" ||
-    !typeof calculateBonus === "function"
+    !options ||
+    typeof calculateBonus !== "function" ||
+    typeof calculateRevenue !== "function"
   ) {
     throw new Error("Чего-то не хватает");
   }
+
+  const { calculateRevenue, calculateBonus } = options;
 
   // @TODO: Подготовка промежуточных данных для сбора статистики
   const sellerStats = data.sellers.map((seller) => ({
