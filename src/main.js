@@ -55,6 +55,7 @@ function analyzeSalesData(data, options) {
 
   if (
     !options ||
+    typeof calculateBonus !== "object" ||
     typeof calculateBonus !== "function" ||
     typeof calculateRevenue !== "function"
   ) {
@@ -112,7 +113,7 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Назначение премий на основе ранжирования
   sellerStats.forEach((seller, index) => {
-    seller.bonus = calculateBonusByProfit(index, sellerStats.length, seller);
+    seller.bonus = calculateBonus(index, sellerStats.length, seller);
     seller.top_products = Object.entries(seller.products_sold)
       .map(([sku, quantity]) => ({ sku, quantity }))
       .sort((a, b) => b.quantity - a.quantity)
