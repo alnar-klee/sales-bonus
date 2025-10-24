@@ -53,16 +53,13 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Проверка наличия опций
 
+  const { calculateRevenue, calculateBonus } = options;
   if (
-    !options ||
-    typeof calculateBonus !== "object" ||
-    typeof calculateBonus !== "function" ||
-    typeof calculateRevenue !== "function"
+    !(typeof calculateRevenue === "function") ||
+    !(typeof calculateBonus === "function")
   ) {
     throw new Error("Чего-то не хватает");
   }
-
-  const { calculateRevenue, calculateBonus } = options;
 
   // @TODO: Подготовка промежуточных данных для сбора статистики
   const sellerStats = data.sellers.map((seller) => ({
@@ -113,7 +110,7 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Назначение премий на основе ранжирования
   sellerStats.forEach((seller, index) => {
-    seller.bonus = calculateBonus(index, sellerStats.length, seller);
+    seller.bonus = calculateBonusByProfit(index, sellerStats.length, seller);
     seller.top_products = Object.entries(seller.products_sold)
       .map(([sku, quantity]) => ({ sku, quantity }))
       .sort((a, b) => b.quantity - a.quantity)
